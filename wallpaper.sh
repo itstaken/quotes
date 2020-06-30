@@ -1,5 +1,4 @@
 #!/bin/bash
-set -x
 ##
 # Pull a quote via quotes.txt, and put that onto a background.
 readarray -t QUOTE < <(bash ./quotes.sh)
