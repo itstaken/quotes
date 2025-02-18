@@ -24,7 +24,7 @@ BACKGROUND=$(mktemp --suffix .png)
 TEXTLESS=$(mktemp --suffix .png)
 FINAL=$(mktemp --suffix .png)
 
-DIM=$(file "${1}" | grep -o '[0-9]\+\W*x\W*[0-9]\+' | tail -n 1)
+DIM=$(file "${1}" | grep -o '[0-9]\+\W*x\W*[0-9]\+' | tail -n 1 | sed 's/x/ /g')
 DIM_X=$(echo $DIM | awk '{print $1}')
 DIM_X=$((DIM_X-15))
 
@@ -38,9 +38,9 @@ convert -background none -fill "${TEXT_COLOR}" -font "${QUOTE_FONT}" -pointsize 
 # Stick the quote to the author attribution
 convert -background none "$QUOTE_FILE" -gravity SouthEast "$AUTH_FILE" -append "$COMBINED"
 
-DIM=$(file "${COMBINED}" | grep -o '[0-9]\+\W*x\W*[0-9]\+' | tail -n 1)
+DIM=$(file "${COMBINED}" | grep -o '[0-9]\+\W*x\W*[0-9]\+' | tail -n 1 | sed 's/x/ /g')
 DIM_X=$(echo $DIM | awk '{print $1}')
-DIM_Y=$(echo $DIM | awk '{print $3}')
+DIM_Y=$(echo $DIM | awk '{print $2}')
 DIM_X=$((DIM_X+15))
 DIM_Y=$((DIM_Y+15))
 
