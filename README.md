@@ -28,4 +28,11 @@ This makes it convenient to do something like this:
 Or to pick a random JPG from the current directory, put a quote in it, and make
 it the background:
 
-    feh --bg-center $(bash wallpaper.sh `ls *.jpg | sort -R | head -n 1`)
+    feh --bg-center "$(bash wallpaper.sh "`find . -iname '*.jpg'" | sort -R | head -n 1`)"
+
+Or if you happen to be using Hyprland with hyprpaper:
+
+    pgrep hyprpaper || hyprpaper
+    WALLS=~/wallpapers/
+    WALL=$(bash ~/quotes/wallpaper.sh "$(find "${WALLS}"/ -iname '*.jpg' | sort -R | head -n 1)")
+    hyprctl hyprpaper reload ,"${WALL}"
