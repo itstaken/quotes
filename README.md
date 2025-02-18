@@ -2,9 +2,9 @@
 
 dumb shell scripts for putting quotes on wallpapers
 
-`wallpaper.sh` - pass it an image and it will put quotes in it
-`quotes.sh` - used by wallpaper.sh to fetch quotes
-`quotes.txt` - contains the text fetched by `quotes.sh`
+* `wallpaper.sh` - pass it an image and it will put quotes in it
+* `quotes.sh` - used by `wallpaper.sh` to fetch quotes
+* `quotes.txt` - contains the text fetched by `quotes.sh`
 
 I download a bunch of wallpapers from [wallhaven.cc](https://wallhaven.cc) and
 put them in the same directory as these scripts.  Then I put some quotes into
