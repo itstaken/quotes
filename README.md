@@ -25,3 +25,7 @@ This makes it convenient to do something like this:
 
     feh --bg-center $(bash wallpaper.sh sakura.jpg)
 
+Or to pick a random JPG from the current directory, put a quote in it, and make
+it the background:
+
+    feh --bg-center $(bash wallpaper.sh `ls *.jpg | sort -R | head -n 1`)
