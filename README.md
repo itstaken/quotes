@@ -23,5 +23,5 @@ That will put the resulting image into /tmp and output something like this:
 
 This makes it convenient to do something like this:
 
-    feh --bg-center $(bash wallpapers.sh sakura.jpg)
+    feh --bg-center $(bash wallpaper.sh sakura.jpg)
 
