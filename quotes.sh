@@ -3,37 +3,40 @@
 ##
 # Read in the quotes, put them in an array, and then pick one at random to output.
 
+WHERE=$(readlink -f "${BASH_SOURCE[0]}")
+WHERE="${WHERE%/*}"/
+
 ##
 # Read logic
-readarray -t LINES < quotes.txt
+readarray -t LINES <"${WHERE}"/quotes.txt
 LENGTH=${#LINES[@]}
 ##
 # Stop = number of quotes
-STOP=$((LENGTH/3))
+STOP=$((LENGTH / 3))
 
 ##
 # Loop over all the entries and echo them.
 dump_all() {
-echo $STOP
-for ((i=0;i<$STOP;i++)) ; do
-    QUOTE=${LINES[$((i*3))]}
-    ATTRIB=${LINES[$((i*3+1))]}
-    echo $QUOTE
-    echo $ATTRIB
-done
+	echo $STOP
+	for ((i = 0; i < STOP; i++)); do
+		QUOTE=${LINES[$((i * 3))]}
+		ATTRIB=${LINES[$((i * 3 + 1))]}
+		echo "${QUOTE}"
+		echo "${ATTRIB}"
+	done
 }
 
 just_one() {
-    local i=$1
-    QUOTE=${LINES[$((i*3))]}
-    ATTRIB=${LINES[$((i*3+1))]}
-    echo $QUOTE
-    echo $ATTRIB
+	local i=$1
+	QUOTE=${LINES[$((i * 3))]}
+	ATTRIB=${LINES[$((i * 3 + 1))]}
+	echo $QUOTE
+	echo $ATTRIB
 }
 
 random_quote() {
-    local i=$((RANDOM%STOP))
-    just_one $i
+	local i=$((RANDOM % STOP))
+	just_one $i
 }
 
 random_quote

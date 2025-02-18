@@ -1,7 +1,11 @@
 #!/bin/bash
+
+WHERE=$(readlink -f "${BASH_SOURCE[0]}")
+WHERE="${WHERE%/*}"/
+
 ##
 # Pull a quote via quotes.txt, and put that onto a background.
-readarray -t QUOTE < <(bash ./quotes.sh)
+readarray -t QUOTE < <(bash "${WHERE}/"quotes.sh)
 
 QUOTE_FONT='DejaVu-Sans-Condensed-Oblique'
 AUTHOR_FONT='DejaVu-Sans-Condensed-Bold'
@@ -25,29 +29,29 @@ TEXTLESS=$(mktemp --suffix .png)
 FINAL=$(mktemp --suffix .png)
 
 DIM=$(file "${1}" | grep -o '[0-9]\+\W*x\W*[0-9]\+' | tail -n 1 | sed 's/x/ /g')
-DIM_X=$(echo $DIM | awk '{print $1}')
-DIM_X=$((DIM_X-15))
+DIM_X=$(echo "${DIM}" | awk '{print $1}')
+DIM_X=$((DIM_X - 15))
 
 ##
 # Rnder quote...
 convert -background none -fill "${TEXT_COLOR}" -font "${QUOTE_FONT}" -pointsize 48 -size ${DIM_X}x caption:"${QUOTE[0]}" -trim +repage -bordercolor None -border 1x1 "${QUOTE_FILE}"
 ##
 # Render the author attribution
-convert -background none -fill "${TEXT_COLOR}" -font "${QUOTE_FONT}" -pointsize 20 label:"${QUOTE[1]}" -trim +repage -bordercolor None -border 1x1 "${AUTH_FILE}"
+convert -background none -fill "${TEXT_COLOR}" -font "${AUTHOR_FONT}" -pointsize 20 label:"${QUOTE[1]}" -trim +repage -bordercolor None -border 1x1 "${AUTH_FILE}"
 ##
 # Stick the quote to the author attribution
 convert -background none "$QUOTE_FILE" -gravity SouthEast "$AUTH_FILE" -append "$COMBINED"
 
 DIM=$(file "${COMBINED}" | grep -o '[0-9]\+\W*x\W*[0-9]\+' | tail -n 1 | sed 's/x/ /g')
-DIM_X=$(echo $DIM | awk '{print $1}')
-DIM_Y=$(echo $DIM | awk '{print $2}')
-DIM_X=$((DIM_X+15))
-DIM_Y=$((DIM_Y+15))
+DIM_X=$(echo "${DIM}" | awk '{print $1}')
+DIM_Y=$(echo "${DIM}" | awk '{print $2}')
+DIM_X=$((DIM_X + 15))
+DIM_Y=$((DIM_Y + 15))
 
 ##
 # Created a rounded rectnangle to use as the caption background
 convert -size ${DIM_X}x${DIM_Y} xc:none -background none -fill black \
-    -draw "roundrectangle 5,5 ${DIM_X},${DIM_Y} 15,15" "${BACKGROUND}"
+	-draw "roundrectangle 5,5 ${DIM_X},${DIM_Y} 15,15" "${BACKGROUND}"
 ##
 # Now blend that background onto the wallpaper provided to create a space for the caption to go.
 composite -blend 60 "${BACKGROUND}" -gravity South "${1}" "${TEXTLESS}"
@@ -58,7 +62,7 @@ composite -blend 60 "${COMBINED}" -gravity South "${TEXTLESS}" "${FINAL}"
 
 ##
 # Now delete the millions of temporary files just created
-rm ${QUOTE_FILE} ${AUTH_FILE} ${COMBINED} ${BACKGROUND} ${TEXTLESS}
+rm "${QUOTE_FILE}" "${AUTH_FILE}" "${COMBINED}" "${BACKGROUND}" "${TEXTLESS}"
 
 ##
 # Finally, display the path to the file (that wasn't deleted) containing the caption and background
